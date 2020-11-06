@@ -2,6 +2,9 @@
 
 為了練習寫React 的CRUD . 寫了這個WEBAPI 
 
+![4.png](4.png)
+
+
 如果你不需要分頁.也可以使用其他線上的mock data,也有 WEBAPI服務
 
 比如: [https://mockaroo.com/](https://mockaroo.com/)
@@ -18,10 +21,11 @@
 
 offset 跟 limit  必填....餵資料給前端測試而已..沒做驗證
 
-![3.png](3.png)
-
 用chrome 測也是可以
 
 例:[https://localhost:44347/api/Customer/GetList?offset=10&limit=10](https://localhost:44347/api/Customer/GetList?offset=10&limit=10)
 
-![4.png](4.png)
+
+
+![3.png](3.png)
+

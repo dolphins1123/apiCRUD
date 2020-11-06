@@ -53,10 +53,6 @@ namespace apiCRUD.Controllers
             if (string.IsNullOrEmpty(model.sortby)) model.sortby = "CustomerID";
 
             var data = db.Customers.AsQueryable().OrderBy(o => model.orderby).SortBy(model.sortby);
-            if (!string.IsNullOrEmpty(model.id))
-            {
-                data = data.Where(x => x.CustomerID == model.id);
-            }
 
             if (!string.IsNullOrEmpty(model.name))
             {

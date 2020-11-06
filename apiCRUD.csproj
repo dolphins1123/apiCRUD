@@ -234,6 +234,7 @@
     <Compile Include="ViewModel\ResultModel.cs" />
     <Compile Include="ViewModel\ReturnModel.cs" />
     <Compile Include="ViewModel\SearchModel.cs" />
+    <Compile Include="ViewModel\SearchModelBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\XmlDocument.xml" />

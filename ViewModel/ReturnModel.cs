@@ -18,6 +18,16 @@ namespace apiCRUD.ViewModel
 
         public bool success { get; set; }
         public List<Customers> result { get; set; }
+
+        /// <summary>
+        /// 總筆數
+        /// </summary>
+        public int totalRowCount { get; set; }
+
+
+        public int totalPage { get; set; }
+
+
     }
 
     /// <summary>

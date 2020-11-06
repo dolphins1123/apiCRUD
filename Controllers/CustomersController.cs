@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
@@ -35,11 +36,22 @@ namespace apiCRUD.Controllers
 
         private IHttpActionResult queryData(SearchModel model)
         {
+            if (model == null)
+            {
+                model = new SearchModel()
+                {
+                    limit = 10,
+                    offset = 0,
+                    orderby = "asc",
+                    sortby = "CustomerID"
+                };
+            }
             //  query case
             if (!model.offset.HasValue) model.offset = 0;
             if (!model.limit.HasValue) model.limit = 10;
             if (string.IsNullOrEmpty(model.orderby)) model.orderby = "asc";
             if (string.IsNullOrEmpty(model.sortby)) model.sortby = "CustomerID";
+
             var data = db.Customers.AsQueryable().OrderBy(o => model.orderby).SortBy(model.sortby);
             if (!string.IsNullOrEmpty(model.id))
             {
@@ -58,6 +70,8 @@ namespace apiCRUD.Controllers
                 ReturnSuccess respSucc = new ReturnSuccess
                 {
                     success = true,
+                    totalRowCount = data.Count(),
+                    totalPage = (int)Math.Ceiling((double)data.Count() / model.limit.Value),
                     result = dataSource
                 };
                 return this.Json(respSucc);

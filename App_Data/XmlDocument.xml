@@ -561,6 +561,11 @@
             回傳成功
             </summary>
         </member>
+        <member name="P:apiCRUD.ViewModel.ReturnSuccess.totalRowCount">
+            <summary>
+            總筆數
+            </summary>
+        </member>
         <member name="T:apiCRUD.ViewModel.ReturnFail">
             <summary>
             回傳失敗

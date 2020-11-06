@@ -19,6 +19,11 @@ namespace apiCRUD.Controllers
     {
         private NorthwindEntities db = new NorthwindEntities();
 
+        /// <summary>
+        /// FOR 前端測試CRUD.  北風資料庫 Customers  資料表
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpGet]
         [HttpPost]
         [Route("api/customer")]
@@ -113,7 +118,7 @@ namespace apiCRUD.Controllers
         }
 
         /// <summary>
-        /// add
+        /// Create
         /// </summary>
         /// <param name="customers"></param>
         /// <returns></returns>
@@ -146,6 +151,11 @@ namespace apiCRUD.Controllers
             return CreatedAtRoute("DefaultApi", new { id = customers.CustomerID }, customers);
         }
 
+        /// <summary>
+        /// Delete
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [ResponseType(typeof(void))]
         public IHttpActionResult Delete(string id)
         {

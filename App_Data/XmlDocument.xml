@@ -571,32 +571,39 @@
             回傳失敗
             </summary>
         </member>
-        <member name="P:apiCRUD.ViewModel.SearchModel.id">
+        <member name="T:apiCRUD.ViewModel.SearchModel">
             <summary>
-            ID
+            改版  抽共用
+            改收  前端傳送過來的JSON filter 條件
             </summary>
         </member>
         <member name="P:apiCRUD.ViewModel.SearchModel.name">
             <summary>
-            名稱
+            名稱 .FOR    普通的查詢方式
+            其他欄位請自己擴充
             </summary>
         </member>
-        <member name="P:apiCRUD.ViewModel.SearchModel.limit">
+        <member name="P:apiCRUD.ViewModel.SearchModel.filters">
+            <summary>
+            JSON  query  case ,前端請用 JSON.stringify(filters)
+            </summary>
+        </member>
+        <member name="P:apiCRUD.ViewModel.SearchModelBase.limit">
             <summary>
             每頁筆數
             </summary>
         </member>
-        <member name="P:apiCRUD.ViewModel.SearchModel.offset">
+        <member name="P:apiCRUD.ViewModel.SearchModelBase.offset">
             <summary>
             offset
             </summary>
         </member>
-        <member name="P:apiCRUD.ViewModel.SearchModel.orderby">
+        <member name="P:apiCRUD.ViewModel.SearchModelBase.orderby">
             <summary>
             正反排 asc/desc
             </summary>
         </member>
-        <member name="P:apiCRUD.ViewModel.SearchModel.sortby">
+        <member name="P:apiCRUD.ViewModel.SearchModelBase.sortby">
             <summary>
             排序
             </summary>

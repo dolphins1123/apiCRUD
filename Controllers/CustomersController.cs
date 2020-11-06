@@ -9,6 +9,7 @@ using System.Web.Http.Description;
 using System.Web.UI.WebControls;
 using apiCRUD.DOMAIN;
 using apiCRUD.ViewModel;
+using Newtonsoft.Json;
 using Swashbuckle.Swagger.Annotations;
 
 namespace apiCRUD.Controllers
@@ -54,9 +55,29 @@ namespace apiCRUD.Controllers
 
             var data = db.Customers.AsQueryable().OrderBy(o => model.orderby).SortBy(model.sortby);
 
+            //通用寫法
             if (!string.IsNullOrEmpty(model.name))
             {
                 data = data.Where(x => x.CompanyName == model.name);
+            }
+
+            //查詢條件包在 JSON filters  中
+            if (!string.IsNullOrEmpty(model.filters))
+            {
+                Customers qryCase = JsonConvert.DeserializeObject<Customers>(model.filters);
+
+                // 多個欄位
+                if (!string.IsNullOrEmpty(qryCase.CustomerID))
+                    data = data.Where(x => x.CustomerID == qryCase.CustomerID);
+
+                if (!string.IsNullOrEmpty(qryCase.CompanyName))
+                    data = data.Where(x => x.CompanyName == qryCase.CompanyName);
+
+                if (!string.IsNullOrEmpty(qryCase.City))
+                    data = data.Where(x => x.City == qryCase.City);
+
+                if (!string.IsNullOrEmpty(qryCase.Phone))
+                    data = data.Where(x => x.Phone == qryCase.Phone);
             }
 
             var dataSource = data.Skip(model.offset.Value).Take(model.limit.Value).ToList();

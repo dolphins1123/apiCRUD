@@ -20,16 +20,15 @@ namespace apiCRUD.Controllers
         private NorthwindEntities db = new NorthwindEntities();
 
         /// <summary>
-        /// FOR 前端測試CRUD.  北風資料庫 Customers  資料表
+        /// FOR 前端測試CRUD.  北風資料庫 Customers    資料表
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpGet]
-        [HttpPost]
-        [Route("api/customer")]
+        [Route("api/Customer/GetList")]
         [ResponseType(typeof(ResultModel))]
         [SwaggerResponse(HttpStatusCode.OK, "成功 <br>回傳欄位 請參考北風資料庫 Customers  資料表", typeof(ResultModel))]
-        public async Task<IHttpActionResult> GetList(SearchModel model)
+        public async Task<IHttpActionResult> GetList([FromUri] SearchModel model)
         {
             return await Task.Run(() => this.queryData(model));
         }
@@ -82,9 +81,10 @@ namespace apiCRUD.Controllers
         /// <param name="id"></param>
         /// <param name="customers"></param>
         /// <returns></returns>
-        [HttpPut]
+        [HttpPost]
+        [Route("api/Customer/Update")]
         [ResponseType(typeof(void))]
-        public IHttpActionResult Update(string id, Customers customers)
+        public IHttpActionResult Update(string id, [FromUri] Customers customers)
         {
             if (!ModelState.IsValid)
             {
@@ -123,7 +123,8 @@ namespace apiCRUD.Controllers
         /// <param name="customers"></param>
         /// <returns></returns>
         [HttpPost]
-        public IHttpActionResult Create(Customers customers)
+        [Route("api/Customer/Create")]
+        public IHttpActionResult Create([FromUri] Customers customers)
         {
             if (!ModelState.IsValid)
             {
@@ -156,6 +157,7 @@ namespace apiCRUD.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Route("api/Customer/Delete")]
         [ResponseType(typeof(void))]
         public IHttpActionResult Delete(string id)
         {

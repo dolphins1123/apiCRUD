@@ -501,7 +501,7 @@
         </member>
         <member name="M:apiCRUD.Controllers.CustomersController.Update(System.String,apiCRUD.DOMAIN.Customers)">
             <summary>
-            update
+             update
             </summary>
             <param name="id"></param>
             <param name="customers"></param>

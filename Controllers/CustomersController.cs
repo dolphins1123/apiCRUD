@@ -114,8 +114,8 @@ namespace apiCRUD.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("api/Customer/Update")]
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> Update([System.Web.Mvc.Bind(Include = "CustomerID,CompanyName,ContactName,ContactTitle,Address,City,Region,PostalCode,Country,Phone,Fax")] Customers model)
+        [ResponseType(typeof(ResultModel))]
+        public async Task<IHttpActionResult> Update(Customers model)
         {
             return await Task.Run(() => this.doUpdate(model));
         }
@@ -133,12 +133,23 @@ namespace apiCRUD.Controllers
             {
                 db.SaveChanges();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
-                return NotFound();
+                ReturnFail respFail = new ReturnFail
+                {
+                    success = false,
+                    error_code = "500",
+                    message = ex.Message
+                };
+
+                return this.Json(respFail);
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            ReturnSuccess respSucc = new ReturnSuccess
+            {
+                success = true
+            };
+            return this.Json(respSucc);
         }
 
         /// <summary>

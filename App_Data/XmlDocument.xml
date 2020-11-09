@@ -499,7 +499,7 @@
             <param name="model"></param>
             <returns></returns>
         </member>
-        <member name="M:apiCRUD.Controllers.CustomersController.Update(System.String,apiCRUD.DOMAIN.Customers)">
+        <member name="M:apiCRUD.Controllers.CustomersController.Update(apiCRUD.DOMAIN.Customers)">
             <summary>
             update
             </summary>

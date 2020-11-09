@@ -115,19 +115,19 @@ namespace apiCRUD.Controllers
         [HttpPost]
         [Route("api/Customer/Update")]
         [ResponseType(typeof(void))]
-        public IHttpActionResult Update(string id, [FromUri] Customers customers)
+        public async Task<IHttpActionResult> Update([System.Web.Mvc.Bind(Include = "CustomerID,CompanyName,ContactName,ContactTitle,Address,City,Region,PostalCode,Country,Phone,Fax")] Customers model)
+        {
+            return await Task.Run(() => this.doUpdate(model));
+        }
+
+        private IHttpActionResult doUpdate(Customers model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != customers.CustomerID)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(customers).State = EntityState.Modified;
+            db.Entry(model).State = EntityState.Modified;
 
             try
             {
@@ -135,14 +135,7 @@ namespace apiCRUD.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CustomersExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
             return StatusCode(HttpStatusCode.NoContent);

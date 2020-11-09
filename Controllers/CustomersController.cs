@@ -159,32 +159,51 @@ namespace apiCRUD.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("api/Customer/Create")]
-        public IHttpActionResult Create([FromUri] Customers customers)
+        [ResponseType(typeof(ResultModel))]
+        public async Task<IHttpActionResult> Create(Customers model)
         {
+            return await Task.Run(() => this.doCreate(model));
+        }
+
+        private IHttpActionResult doCreate(Customers model)
+        {
+            ReturnFail respFail = new ReturnFail
+            {
+                success = false,
+                error_code = "500",
+                message = "驗證失敗"
+            };
+
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.Json(respFail);
             }
 
-            db.Customers.Add(customers);
+            db.Customers.Add(model);
 
             try
             {
                 db.SaveChanges();
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException ex)
             {
-                if (CustomersExists(customers.CustomerID))
+                if (CustomersExists(model.CustomerID))
                 {
-                    return Conflict();
+                    return this.Json(respFail);
                 }
                 else
                 {
-                    throw;
+                    return this.Json(respFail);
                 }
             }
 
-            return CreatedAtRoute("DefaultApi", new { id = customers.CustomerID }, customers);
+            CreatedAtRoute("DefaultApi", new { id = model.CustomerID }, model);
+
+            ReturnSuccess respSucc = new ReturnSuccess
+            {
+                success = true
+            };
+            return this.Json(respSucc);
         }
 
         /// <summary>
@@ -193,20 +212,42 @@ namespace apiCRUD.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [Route("api/Customer/Delete")]
-        [ResponseType(typeof(void))]
-        public IHttpActionResult Delete(string id)
+        [ResponseType(typeof(ResultModel))]
+        public async Task<IHttpActionResult> Delete(string id)
         {
+            return await Task.Run(() => this.doDelete(id));
+        }
+
+        private IHttpActionResult doDelete(string id)
+        {
+            ReturnFail respFail = new ReturnFail
+            {
+                success = false,
+                error_code = "500",
+                message = "驗證失敗"
+            };
+
             Customers customers = db.Customers.Find(id);
             if (customers == null)
             {
-                return NotFound();
+                return this.Json(respFail);
             }
 
             //與order 連動.有可能刪除失敗
-            db.Customers.Remove(customers);
-            db.SaveChanges();
-
-            return Ok(customers);
+            try
+            {
+                db.Customers.Remove(customers);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return this.Json(respFail);
+            }
+            ReturnSuccess respSucc = new ReturnSuccess
+            {
+                success = true
+            };
+            return this.Json(respSucc);
         }
 
         protected override void Dispose(bool disposing)

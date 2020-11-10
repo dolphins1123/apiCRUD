@@ -197,7 +197,7 @@ namespace apiCRUD.Controllers
                 }
             }
 
-            CreatedAtRoute("DefaultApi", new { id = model.CustomerID }, model);
+            //  CreatedAtRoute("DefaultApi", new { id = model.CustomerID }, model);
 
             ReturnSuccess respSucc = new ReturnSuccess
             {

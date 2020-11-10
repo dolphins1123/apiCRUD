@@ -212,7 +212,7 @@ namespace apiCRUD.Controllers
         /// </summary>
         /// <param name="idList">多筆請用, 隔開</param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         [Route("api/Customer/Delete")]
         [ResponseType(typeof(ResultModel))]
         public async Task<IHttpActionResult> Delete(string idList)
@@ -252,6 +252,7 @@ namespace apiCRUD.Controllers
             }
             catch (Exception ex)
             {
+                respFail.message = ex.Message;
                 return this.Json(respFail);
             }
             ReturnSuccess respSucc = new ReturnSuccess

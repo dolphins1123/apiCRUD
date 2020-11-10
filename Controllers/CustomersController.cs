@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -209,16 +210,17 @@ namespace apiCRUD.Controllers
         /// <summary>
         /// Delete
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="idList">多筆請用, 隔開</param>
         /// <returns></returns>
+        [HttpPost]
         [Route("api/Customer/Delete")]
         [ResponseType(typeof(ResultModel))]
-        public async Task<IHttpActionResult> Delete(string id)
+        public async Task<IHttpActionResult> Delete(string idList)
         {
-            return await Task.Run(() => this.doDelete(id));
+            return await Task.Run(() => this.doDelete(idList));
         }
 
-        private IHttpActionResult doDelete(string id)
+        private IHttpActionResult doDelete(string idList)
         {
             ReturnFail respFail = new ReturnFail
             {
@@ -227,8 +229,17 @@ namespace apiCRUD.Controllers
                 message = "驗證失敗"
             };
 
-            Customers customers = db.Customers.Find(id);
-            if (customers == null)
+            var dataSource = new List<Customers>();
+            if (idList.Contains(","))
+            {
+                dataSource = db.Customers.Where(x => idList.Split(',').Contains(x.CustomerID)).ToList();
+            }
+            else
+            {
+                dataSource = db.Customers.Where(x => x.CustomerID == idList).ToList();
+            }
+
+            if (dataSource.Count < 1)
             {
                 return this.Json(respFail);
             }
@@ -236,7 +247,7 @@ namespace apiCRUD.Controllers
             //與order 連動.有可能刪除失敗
             try
             {
-                db.Customers.Remove(customers);
+                db.Customers.RemoveRange(customers);
                 db.SaveChanges();
             }
             catch (Exception ex)

@@ -247,7 +247,7 @@ namespace apiCRUD.Controllers
             //與order 連動.有可能刪除失敗
             try
             {
-                db.Customers.RemoveRange(customers);
+                db.Customers.RemoveRange(dataSource);
                 db.SaveChanges();
             }
             catch (Exception ex)

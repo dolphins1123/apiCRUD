@@ -230,23 +230,25 @@ namespace apiCRUD.Controllers
             };
 
             var dataSource = new List<Customers>();
-            if (idList.Contains(","))
-            {
-                dataSource = db.Customers.Where(x => idList.Split(',').Contains(x.CustomerID)).ToList();
-            }
-            else
-            {
-                dataSource = db.Customers.Where(x => x.CustomerID == idList).ToList();
-            }
 
-            if (dataSource.Count < 1)
-            {
-                return this.Json(respFail);
-            }
-
-            //與order 連動.有可能刪除失敗
             try
             {
+                if (idList.Contains(","))
+                {
+                    List<string> foo = idList.Split(',').ToList();
+                    dataSource = db.Customers.Where(x => foo.Contains(x.CustomerID)).ToList();
+                }
+                else
+                {
+                    dataSource = db.Customers.Where(x => x.CustomerID == idList).ToList();
+                }
+
+                if (dataSource.Count < 1)
+                {
+                    return this.Json(respFail);
+                }
+
+                //與order 連動.有可能刪除失敗
                 db.Customers.RemoveRange(dataSource);
                 db.SaveChanges();
             }

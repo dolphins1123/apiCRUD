@@ -1,4 +1,3 @@
-using System.Configuration;
 using System.Web.Http;
 using apiCRUD;
 using Swashbuckle.Application;
@@ -22,7 +21,7 @@ namespace apiCRUD
                         // resolve correctly. You can workaround this by providing your own code to determine the root URL.
 
                         // ³]©wBOOT URL
-                        c.RootUrl(req => GetRootUrlFromAppConfig());
+                        //     c.RootUrl(req => GetRootUrlFromAppConfig());
 
                         // If schemes are not explicitly provided in a Swagger 2.0 document, then the scheme used to access
                         // the docs is taken as the default. If your API supports multiple schemes and you want to be explicit
@@ -263,9 +262,9 @@ namespace apiCRUD
             return System.String.Format(@"{0}App_Data\XmlDocument.xml", System.AppDomain.CurrentDomain.BaseDirectory);
         }
 
-        internal static string GetRootUrlFromAppConfig()
-        {
-            return ConfigurationManager.AppSettings["swaggerUrl"];
-        }
+        //internal static string GetRootUrlFromAppConfig()
+        //{
+        //    return ConfigurationManager.AppSettings["swaggerUrl"];
+        //}
     }
 }

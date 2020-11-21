@@ -499,6 +499,13 @@
             <param name="model"></param>
             <returns></returns>
         </member>
+        <member name="M:apiCRUD.Controllers.CustomersController.GetJsonData(apiCRUD.ViewModel.SearchModel)">
+            <summary>
+            僅返回資料集合
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
         <member name="M:apiCRUD.Controllers.CustomersController.Update(apiCRUD.DOMAIN.Customers)">
             <summary>
              update

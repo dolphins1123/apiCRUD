@@ -29,14 +29,28 @@ namespace apiCRUD.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("api/Customer/GetList")]
-        [ResponseType(typeof(ResultModel))]
-        [SwaggerResponse(HttpStatusCode.OK, "成功 <br>回傳欄位 請參考北風資料庫 Customers  資料表", typeof(ResultModel))]
+        [ResponseType(typeof(List<Customers>))]
+        [SwaggerResponse(HttpStatusCode.OK, "成功 <br>回傳欄位 請參考北風資料庫 Customers  資料表", typeof(List<Customers>))]
         public async Task<IHttpActionResult> GetList([FromUri] SearchModel model)
         {
             return await Task.Run(() => this.queryData(model));
         }
 
-        private IHttpActionResult queryData(SearchModel model)
+        /// <summary>
+        /// 僅返回資料集合
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetJsonData")]
+        [ResponseType(typeof(ResultModel))]
+        [SwaggerResponse(HttpStatusCode.OK, "成功 <br>回傳欄位 僅返回資料集合北風資料庫 Customers  資料表", typeof(ResultModel))]
+        public async Task<IHttpActionResult> GetJsonData([FromUri] SearchModel model)
+        {
+            return await Task.Run(() => this.queryData(model, 1));
+        }
+
+        private IHttpActionResult queryData(SearchModel model, int rtnType = 0)
         {
             if (model == null)
             {
@@ -85,17 +99,130 @@ namespace apiCRUD.Controllers
 
             if (dataSource.Count > 0)
             {
-                ReturnSuccess respSucc = new ReturnSuccess
+                if (rtnType == 1)
                 {
-                    success = true,
-                    totalRowCount = data.Count(),
-                    totalPage = (int)Math.Ceiling((double)data.Count() / model.limit.Value),
-                    result = dataSource
-                };
-                return this.Json(respSucc);
+                    return this.Json(dataSource);
+                }
+                else
+                {
+                    ReturnSuccess respSucc = new ReturnSuccess
+                    {
+                        success = true,
+                        totalRowCount = data.Count(),
+                        totalPage = (int)Math.Ceiling((double)data.Count() / model.limit.Value),
+                        result = dataSource
+                    };
+                    return this.Json(respSucc);
+                }
             }
             else
             {
+                if (rtnType == 1)
+                {
+                    return null;
+                }
+
+                ReturnFail respFail = new ReturnFail
+                {
+                    success = false,
+                    error_code = "404",
+                    message = "查無資料"
+                };
+
+                return this.Json(respFail);
+            }
+        }
+
+        /// <summary>
+        /// 擴充GetData,修改QUERY參數
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetList")]
+        [ResponseType(typeof(List<Customers>))]
+        [SwaggerResponse(HttpStatusCode.OK, "pageSize   ,pageIndex 必填 ,  <br>回傳欄位 請參考北風資料庫 Customers  資料表", typeof(List<Customers>))]
+        public async Task<IHttpActionResult> GetData([FromUri] QueryModel model)
+        {
+            return await Task.Run(() => this.queryData2(model));
+        }
+
+        private IHttpActionResult queryData2(QueryModel model, int rtnType = 0)
+        {
+            if (model == null)
+            {
+                model = new QueryModel()
+                {
+                    pageSize = 10,
+                    pageIndex = 1,
+                    orderby = "asc",
+                    sortby = "CustomerID",
+                    limit = 10,
+                    offset = 0
+                };
+            }
+            //  query case
+
+            model.limit = model.pageSize;
+            model.offset = (model.pageIndex - 1) * model.pageSize;
+
+            if (string.IsNullOrEmpty(model.orderby)) model.orderby = "asc";
+            if (string.IsNullOrEmpty(model.sortby)) model.sortby = "CustomerID";
+
+            var data = db.Customers.AsQueryable().OrderBy(o => model.orderby).SortBy(model.sortby);
+
+            //通用寫法
+            if (!string.IsNullOrEmpty(model.name))
+            {
+                data = data.Where(x => x.CompanyName == model.name);
+            }
+
+            //查詢條件包在 JSON filters  中
+            if (!string.IsNullOrEmpty(model.filters))
+            {
+                Customers qryCase = JsonConvert.DeserializeObject<Customers>(model.filters);
+
+                // 多個欄位
+                if (!string.IsNullOrEmpty(qryCase.CustomerID))
+                    data = data.Where(x => x.CustomerID == qryCase.CustomerID);
+
+                if (!string.IsNullOrEmpty(qryCase.CompanyName))
+                    data = data.Where(x => x.CompanyName == qryCase.CompanyName);
+
+                if (!string.IsNullOrEmpty(qryCase.City))
+                    data = data.Where(x => x.City == qryCase.City);
+
+                if (!string.IsNullOrEmpty(qryCase.Phone))
+                    data = data.Where(x => x.Phone == qryCase.Phone);
+            }
+
+            var dataSource = data.Skip((int)model.offset.Value).Take((int)model.limit.Value).ToList();
+
+            if (dataSource.Count > 0)
+            {
+                if (rtnType == 1)
+                {
+                    return this.Json(dataSource);
+                }
+                else
+                {
+                    ReturnSuccess respSucc = new ReturnSuccess
+                    {
+                        success = true,
+                        totalRowCount = data.Count(),
+                        totalPage = (int)Math.Ceiling((double)data.Count() / model.limit.Value),
+                        result = dataSource
+                    };
+                    return this.Json(respSucc);
+                }
+            }
+            else
+            {
+                if (rtnType == 1)
+                {
+                    return null;
+                }
+
                 ReturnFail respFail = new ReturnFail
                 {
                     success = false,

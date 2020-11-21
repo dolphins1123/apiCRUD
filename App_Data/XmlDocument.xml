@@ -506,6 +506,13 @@
             <param name="model"></param>
             <returns></returns>
         </member>
+        <member name="M:apiCRUD.Controllers.CustomersController.GetData(apiCRUD.ViewModel.QueryModel)">
+            <summary>
+            擴充GetData,修改QUERY參數
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
         <member name="M:apiCRUD.Controllers.CustomersController.Update(apiCRUD.DOMAIN.Customers)">
             <summary>
              update
@@ -593,6 +600,52 @@
         <member name="P:apiCRUD.ViewModel.SearchModel.filters">
             <summary>
             JSON  query  case ,前端請用 JSON.stringify(filters)
+            </summary>
+        </member>
+        <member name="T:apiCRUD.ViewModel.QueryModel">
+            <summary>
+            傳遞頁數 版本的SearchModel ,pageSize   ,pageIndex 必填
+            </summary>
+        </member>
+        <member name="P:apiCRUD.ViewModel.QueryModel.pageSize">
+            <summary>
+            每頁筆數
+            </summary>
+        </member>
+        <member name="P:apiCRUD.ViewModel.QueryModel.pageIndex">
+            <summary>
+            第幾頁
+            </summary>
+        </member>
+        <member name="P:apiCRUD.ViewModel.QueryModel.orderby">
+            <summary>
+            正反排 asc/desc
+            </summary>
+        </member>
+        <member name="P:apiCRUD.ViewModel.QueryModel.sortby">
+            <summary>
+            排序
+            </summary>
+        </member>
+        <member name="P:apiCRUD.ViewModel.QueryModel.name">
+            <summary>
+            名稱 .FOR    普通的查詢方式
+            其他欄位請自己擴充
+            </summary>
+        </member>
+        <member name="P:apiCRUD.ViewModel.QueryModel.filters">
+            <summary>
+            JSON  query  case ,前端請用 JSON.stringify(filters)
+            </summary>
+        </member>
+        <member name="P:apiCRUD.ViewModel.QueryModel.limit">
+            <summary>
+            每頁筆數
+            </summary>
+        </member>
+        <member name="P:apiCRUD.ViewModel.QueryModel.offset">
+            <summary>
+            offset
             </summary>
         </member>
         <member name="P:apiCRUD.ViewModel.SearchModelBase.limit">

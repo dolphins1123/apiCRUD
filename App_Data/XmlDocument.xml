@@ -517,15 +517,14 @@
             <summary>
              update
             </summary>
-            <param name="id"></param>
-            <param name="customers"></param>
+            <param name="model"></param>
             <returns></returns>
         </member>
         <member name="M:apiCRUD.Controllers.CustomersController.Create(apiCRUD.DOMAIN.Customers)">
             <summary>
             Create
             </summary>
-            <param name="customers"></param>
+            <param name="model"></param>
             <returns></returns>
         </member>
         <member name="M:apiCRUD.Controllers.CustomersController.Delete(System.String)">
@@ -533,6 +532,12 @@
             Delete
             </summary>
             <param name="idList">多筆請用, 隔開</param>
+            <returns></returns>
+        </member>
+        <member name="M:apiCRUD.Controllers.ValuesController.Get">
+            <summary>
+            CALL 外部API   範例
+            </summary>
             <returns></returns>
         </member>
         <member name="P:apiCRUD.ViewModel.ResultModel.success">

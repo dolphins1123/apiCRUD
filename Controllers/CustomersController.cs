@@ -1,4 +1,9 @@
-﻿using System;
+﻿using apiCRUD.DOMAIN;
+using apiCRUD.ViewModel;
+using Newtonsoft.Json;
+using NLog;
+using Swashbuckle.Swagger.Annotations;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -8,10 +13,6 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.UI.WebControls;
-using apiCRUD.DOMAIN;
-using apiCRUD.ViewModel;
-using Newtonsoft.Json;
-using Swashbuckle.Swagger.Annotations;
 
 namespace apiCRUD.Controllers
 {
@@ -20,6 +21,7 @@ namespace apiCRUD.Controllers
     /// </summary>
     public class CustomersController : ApiController
     {
+        private Logger logger = LogManager.GetCurrentClassLogger();
         private NorthwindEntities db = new NorthwindEntities();
 
         /// <summary>
@@ -237,14 +239,14 @@ namespace apiCRUD.Controllers
         /// <summary>
         ///  update
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="customers"></param>
+        /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
         [Route("api/Customer/Update")]
         [ResponseType(typeof(ResultModel))]
         public async Task<IHttpActionResult> Update(Customers model)
         {
+
             return await Task.Run(() => this.doUpdate(model));
         }
 
@@ -252,6 +254,13 @@ namespace apiCRUD.Controllers
         {
             if (!ModelState.IsValid)
             {
+
+                string message = string.Join(" | ", this.ModelState.Values
+               .SelectMany(v => v.Errors)
+               .Select(e => e.ErrorMessage));
+                logger.Error("customer  create ModelState  error:" + message);
+
+
                 return BadRequest(ModelState);
             }
 
@@ -270,6 +279,7 @@ namespace apiCRUD.Controllers
                     message = ex.Message
                 };
 
+                logger.Error("customer    error:" + ex.Message);
                 return this.Json(respFail);
             }
 
@@ -283,13 +293,15 @@ namespace apiCRUD.Controllers
         /// <summary>
         /// Create
         /// </summary>
-        /// <param name="customers"></param>
+        /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
         [Route("api/Customer/Create")]
         [ResponseType(typeof(ResultModel))]
         public async Task<IHttpActionResult> Create(Customers model)
         {
+
+
             return await Task.Run(() => this.doCreate(model));
         }
 
@@ -304,6 +316,11 @@ namespace apiCRUD.Controllers
 
             if (!ModelState.IsValid)
             {
+                string message = string.Join(" | ", this.ModelState.Values
+             .SelectMany(v => v.Errors)
+             .Select(e => e.ErrorMessage));
+                logger.Error("customer  create ModelState  error:" + message);
+
                 return this.Json(respFail);
             }
 
@@ -315,6 +332,7 @@ namespace apiCRUD.Controllers
             }
             catch (DbUpdateException ex)
             {
+                logger.Error("customer    error:" + ex.Message);
                 if (CustomersExists(model.CustomerID))
                 {
                     return this.Json(respFail);

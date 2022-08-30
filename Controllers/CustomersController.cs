@@ -150,7 +150,7 @@ namespace apiCRUD.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("GetList")]
+        [Route("api/Customer/GetData")]
         [ResponseType(typeof(List<Customers>))]
         [SwaggerResponse(HttpStatusCode.OK, "pageSize   ,pageIndex 必填 ,  <br>回傳欄位 請參考北風資料庫 Customers  資料表", typeof(List<Customers>))]
         public async Task<IHttpActionResult> GetData([FromUri] QueryModel model)

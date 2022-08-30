@@ -540,6 +540,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:apiCRUD.Controllers.ValuesController.Post(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+        </member>
         <member name="P:apiCRUD.ViewModel.ResultModel.success">
             <summary>
             是否成功

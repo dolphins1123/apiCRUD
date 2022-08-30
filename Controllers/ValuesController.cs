@@ -26,7 +26,7 @@ namespace apiCRUD.Controllers
                 var _recData = await client.GetAsync(_url);
                 _recData.EnsureSuccessStatusCode();
                 string responseBody = await _recData.Content.ReadAsStringAsync();
-                result = JsonSerializer.Deserialize<List<Class1>>(responseBody );   //Serialize    model >  string 
+                result = JsonSerializer.Deserialize<List<Class1>>(responseBody);   //Serialize    model >  string 
                 logger.Info("  test...Info.");
                 logger.Debug("  test Debug...");
             }
@@ -46,6 +46,10 @@ namespace apiCRUD.Controllers
         }
 
         // POST api/values
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
         public void Post([FromBody] string value)
         {
         }

@@ -1,11 +1,18 @@
-﻿using System.Collections.Generic;
-using apiCRUD.DOMAIN;
+﻿using apiCRUD.DOMAIN;
+using System.Collections.Generic;
 
 namespace apiCRUD.ViewModel
 {
     public class ReturnModel
     {
+        public bool isSuccess { get; set; }
+
+        public ReturnSuccess returnSuccess { get; set; }
+        public ReturnFail returnFail { get; set; }
     }
+
+
+
 
     /// <summary>
     /// 回傳成功

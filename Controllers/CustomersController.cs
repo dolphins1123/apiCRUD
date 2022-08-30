@@ -24,6 +24,9 @@ namespace apiCRUD.Controllers
         private Logger logger = LogManager.GetCurrentClassLogger();
         private NorthwindEntities db = new NorthwindEntities();
 
+
+        public CustomersController() { }
+
         /// <summary>
         /// FOR 前端測試CRUD.  北風資料庫 Customers    資料表
         /// </summary>
@@ -54,6 +57,10 @@ namespace apiCRUD.Controllers
 
         private IHttpActionResult queryData(SearchModel model, int rtnType = 0)
         {
+
+
+            #region bak
+            #region 判斷
             if (model == null)
             {
                 model = new SearchModel()
@@ -69,6 +76,7 @@ namespace apiCRUD.Controllers
             if (!model.limit.HasValue) model.limit = 10;
             if (string.IsNullOrEmpty(model.orderby)) model.orderby = "asc";
             if (string.IsNullOrEmpty(model.sortby)) model.sortby = "CustomerID";
+            #endregion
 
             var data = db.Customers.AsQueryable().OrderBy(o => model.orderby).SortBy(model.sortby);
 
@@ -133,6 +141,7 @@ namespace apiCRUD.Controllers
 
                 return this.Json(respFail);
             }
+            #endregion
         }
 
         /// <summary>

@@ -1,3 +1,4 @@
+using apiCRUD.ActionFilter;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -18,6 +19,9 @@ namespace apiCRUD
             //宣告 Web API 自動忽略所有參考循環的處理：
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             GlobalConfiguration.Configuration.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.XmlFormatter);
+
+            // 加這行，增加Jwt驗證Filter
+            GlobalConfiguration.Configuration.Filters.Add(new JwtAuthFilter());
         }
     }
 }

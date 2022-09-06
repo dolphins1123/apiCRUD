@@ -534,6 +534,25 @@
             <param name="idList">多筆請用, 隔開</param>
             <returns></returns>
         </member>
+        <member name="T:apiCRUD.Controllers.JwtAuthController">
+            <summary>
+            JWT 驗證
+            </summary>
+        </member>
+        <member name="M:apiCRUD.Controllers.JwtAuthController.Login(apiCRUD.ViewModel.LoginRequestModel)">
+            <summary>
+            登入
+            </summary>
+            <param name="account"></param>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
+        <member name="M:apiCRUD.Controllers.JwtAuthController.IsAuthenticated">
+            <summary>
+            測試是否驗證成功
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:apiCRUD.Controllers.ValuesController.Get">
             <summary>
             CALL 外部API   範例
@@ -545,6 +564,18 @@
             
             </summary>
             <param name="value"></param>
+        </member>
+        <member name="M:apiCRUD.Helper.JwtAuthUtil.GenerateToken(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            產生token
+            </summary>
+            <param name="claim">payload 需透過token傳遞的資料</param>
+            <returns></returns>
+        </member>
+        <member name="T:apiCRUD.ViewModel.LoginRequestModel">
+            <summary>
+            登入資訊
+            </summary>
         </member>
         <member name="P:apiCRUD.ViewModel.ResultModel.success">
             <summary>

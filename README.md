@@ -29,3 +29,8 @@
 
 ![3.png](3.png)
 
+
+
+## MIT License
+
+Copyright (c) 2020
